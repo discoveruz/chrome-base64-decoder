@@ -1,0 +1,77 @@
+.viewer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    'head head'
+    'main side';
+  height: 100vh;
+  background: var(--bg);
+}
+
+.viewer-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'head'
+    'main';
+}
+
+.viewer-head {
+  grid-area: head;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+
+.viewer-title {
+  margin: 0;
+  margin-right: auto;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.viewer-main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.viewer-side {
+  grid-area: side;
+  border-left: 1px solid var(--border);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.viewer-side .history {
+  flex: 1;
+  min-height: 0;
+}
+
+/* The viewer is a real tab, so it has to survive a narrow window too. */
+@media (max-width: 760px) {
+  .viewer {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'main'
+      'side';
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .viewer-side {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    max-height: 40vh;
+  }
+}

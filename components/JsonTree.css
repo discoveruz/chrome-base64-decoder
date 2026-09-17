@@ -1,0 +1,217 @@
+.json-tree-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.json-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.json-search {
+  flex: 1 1 140px;
+  min-width: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.json-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.json-tree {
+  padding: 8px 8px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-x: auto;
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+}
+
+.json-row {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-radius: 3px;
+}
+
+.json-row:hover {
+  background: var(--bg-subtle);
+}
+
+/* Row actions sit at the right edge so they never push the value or its comma
+   around, and stay invisible until the row is hovered. */
+.json-row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  padding-left: 8px;
+  flex: 0 0 auto;
+}
+
+.json-row-copy {
+  opacity: 0;
+  padding: 0 4px;
+  border: none;
+  background: transparent;
+  line-height: 1.4;
+  font-size: 11px;
+}
+
+.json-row:hover .json-row-copy,
+.json-row-copy:focus-visible {
+  opacity: 0.75;
+}
+
+.json-row-copy:hover {
+  opacity: 1 !important;
+  background: var(--bg-hover);
+}
+
+.json-row-path::after {
+  content: '⌁';
+  font-size: 10px;
+}
+
+.json-row-path {
+  font-size: 0;
+}
+
+.json-twisty {
+  width: 14px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 10px;
+  line-height: 1.7;
+  flex: 0 0 14px;
+  text-align: left;
+}
+
+.json-twisty:hover {
+  color: var(--text);
+}
+
+.json-twisty-spacer {
+  flex: 0 0 14px;
+}
+
+.json-summary {
+  color: var(--text-faint);
+  font-style: italic;
+  font-size: 11px;
+}
+
+.json-nested-btn {
+  opacity: 0.85;
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.json-nested {
+  flex-basis: 100%;
+  margin: 4px 0 4px 14px;
+  padding: 6px 8px;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--bg-subtle);
+  font-size: 11.5px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.json-nested-label {
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.json-nested-error {
+  color: var(--danger);
+  border-left-color: var(--danger);
+}
+
+.json-too-large {
+  padding: 12px;
+}
+
+.json-raw {
+  margin: 8px 0 0;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  font-size: 11.5px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 340px;
+  overflow: auto;
+}
+
+/* token colours */
+.tok-key { color: var(--tok-key); }
+.tok-index { color: var(--tok-null); }
+.tok-string { color: var(--tok-string); }
+.tok-number { color: var(--tok-number); }
+.tok-boolean { color: var(--tok-boolean); }
+.tok-null { color: var(--tok-null); font-style: italic; }
+.tok-punct { color: var(--tok-punct); }
+.tok-object,
+.tok-array { color: var(--tok-punct); }
+
+/* Black and white: hue no longer separates the value types, so lean on weight
+   and style instead. Without this the tree reads as undifferentiated grey. */
+:root[data-theme='mono'] .tok-key {
+  font-weight: 700;
+}
+
+:root[data-theme='mono'] .tok-string {
+  font-weight: 400;
+}
+
+:root[data-theme='mono'] .tok-number,
+:root[data-theme='mono'] .tok-boolean {
+  font-weight: 600;
+}
+
+:root[data-theme='mono'] .tok-boolean {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+:root[data-theme='mono'] .tok-null {
+  font-style: italic;
+}
+
+:root[data-theme='mono'] .json-nested {
+  border-left-color: #000;
+}

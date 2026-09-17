@@ -1,0 +1,214 @@
+/* Styles for the in-page bubble.
+   These live inside a shadow root (cssInjectionMode: 'ui'), so they are fully
+   isolated from the host page — but that also means the shared tokens.css is
+   not available here, so the palette is redeclared locally. */
+
+.b64-root {
+  --b64-bg: #ffffff;
+  --b64-bg-subtle: #f6f7f9;
+  --b64-border: #d8dde4;
+  --b64-text: #16191d;
+  --b64-muted: #5d6673;
+  --b64-accent: #3b5bdb;
+  --b64-ok: #1a7f4b;
+  --b64-ok-bg: #e3f5ea;
+  --b64-danger: #c0392b;
+  --b64-danger-bg: #fdeceb;
+  --b64-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --b64-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  all: initial;
+  font-family: var(--b64-sans);
+}
+
+/* The container carries data-theme, mirroring the extension pages. Dark applies
+   from the OS only when no explicit theme is stamped. */
+@media (prefers-color-scheme: dark) {
+  .b64-root:not([data-theme]) {
+    --b64-bg: #1e232b;
+    --b64-bg-subtle: #171b21;
+    --b64-border: #39414d;
+    --b64-text: #e6e9ee;
+    --b64-muted: #9aa4b2;
+    --b64-accent: #7b9cff;
+    --b64-ok: #58d093;
+    --b64-ok-bg: #14301f;
+    --b64-danger: #ff8b7e;
+    --b64-danger-bg: #3a1d1a;
+  }
+}
+
+.b64-root[data-theme='dark'] {
+    --b64-bg: #1e232b;
+    --b64-bg-subtle: #171b21;
+    --b64-border: #39414d;
+    --b64-text: #e6e9ee;
+    --b64-muted: #9aa4b2;
+    --b64-accent: #7b9cff;
+    --b64-ok: #58d093;
+    --b64-ok-bg: #14301f;
+    --b64-danger: #ff8b7e;
+    --b64-danger-bg: #3a1d1a;
+}
+
+.b64-root[data-theme='mono'] {
+  --b64-bg: #ffffff;
+  --b64-bg-subtle: #f2f2f2;
+  --b64-border: #000000;
+  --b64-text: #000000;
+  --b64-muted: #464646;
+  --b64-accent: #000000;
+  --b64-ok: #000000;
+  --b64-ok-bg: #ffffff;
+  --b64-danger: #ffffff;
+  --b64-danger-bg: #000000;
+}
+
+/* Without hue, the expired badge earns its emphasis from inversion instead. */
+.b64-root[data-theme='mono'] .b64-badge {
+  border: 1px solid #000;
+}
+
+.b64-root *,
+.b64-root *::before,
+.b64-root *::after {
+  box-sizing: border-box;
+}
+
+/* z-index sits above the overwhelming majority of site chrome without going
+   to 2147483647, which fights with other extensions. */
+.b64-bubble {
+  position: fixed;
+  z-index: 2147483000;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--b64-border);
+  border-radius: 7px;
+  background: var(--b64-bg);
+  color: var(--b64-text);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.b64-bubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.24);
+}
+
+.b64-card {
+  position: fixed;
+  z-index: 2147483000;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--b64-border);
+  border-radius: 10px;
+  background: var(--b64-bg);
+  color: var(--b64-text);
+  font-size: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.26);
+  overflow: hidden;
+}
+
+.b64-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--b64-border);
+  background: var(--b64-bg-subtle);
+}
+
+.b64-card-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--b64-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.b64-card-btn {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border: 1px solid var(--b64-border);
+  border-radius: 5px;
+  background: var(--b64-bg);
+  color: var(--b64-text);
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.b64-card-btn:hover {
+  background: var(--b64-bg-subtle);
+  border-color: var(--b64-accent);
+}
+
+.b64-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px;
+}
+
+.b64-pre {
+  margin: 0;
+  font-family: var(--b64-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--b64-text);
+}
+
+.b64-muted {
+  color: var(--b64-muted);
+  font-size: 11px;
+}
+
+.b64-note {
+  margin: 2px 0 6px;
+  font-style: italic;
+}
+
+.b64-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.b64-badge {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--b64-bg-subtle);
+  color: var(--b64-muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.b64-badge-ok {
+  background: var(--b64-ok-bg);
+  color: var(--b64-ok);
+}
+
+.b64-badge-danger {
+  background: var(--b64-danger-bg);
+  color: var(--b64-danger);
+}
+
+.b64-error strong {
+  color: var(--b64-danger);
+  font-size: 11.5px;
+}

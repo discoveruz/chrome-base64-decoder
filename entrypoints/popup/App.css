@@ -1,0 +1,175 @@
+.popup {
+  width: 440px;
+  height: 560px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg);
+}
+
+.popup-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+
+.popup-title {
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.popup-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+.popup-tab {
+  padding: 3px 9px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.popup-tab:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.popup-tab.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.popup-note {
+  padding: 5px 10px;
+  background: var(--warn-soft);
+  color: var(--warn);
+  font-size: 11px;
+  border-bottom: 1px solid var(--border);
+}
+
+.popup-settings {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.popup-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.popup-toggle input {
+  margin: 2px 0 0;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.popup-toggle-label {
+  display: block;
+  font-size: 12.5px;
+}
+
+.popup-toggle-hint {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.popup-settings-note {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.popup-settings-note code {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: var(--bg-hover);
+}
+
+.popup-foot {
+  padding: 5px 10px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  font-size: 10px;
+  text-align: center;
+}
+
+/* The history tab fills the body when active. */
+.popup > .history {
+  flex: 1;
+  min-height: 0;
+}
+
+.popup-theme {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.popup-segmented {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+}
+
+.popup-segment {
+  flex: 1;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.popup-segment:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.popup-segment.is-active {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.popup-toggle.is-indented {
+  margin-left: 22px;
+}
+
+.popup-toggle.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.popup-toggle.is-disabled input {
+  cursor: not-allowed;
+}

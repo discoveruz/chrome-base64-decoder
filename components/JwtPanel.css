@@ -1,0 +1,142 @@
+.jwt-panel {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jwt-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.jwt-status-detail {
+  font-size: 12px;
+}
+
+.jwt-warning {
+  margin: 0;
+  padding: 7px 9px;
+  border: 1px solid var(--warn);
+  border-left-width: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--warn-soft);
+  color: var(--text);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.jwt-warning strong {
+  color: var(--warn);
+}
+
+.jwt-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 6px 12px;
+  margin: 0;
+}
+
+.jwt-fact {
+  min-width: 0;
+}
+
+.jwt-fact dt {
+  color: var(--text-muted);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.jwt-fact dd {
+  margin: 1px 0 0;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.jwt-times {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.jwt-times th {
+  text-align: left;
+  padding: 3px 6px;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+.jwt-times td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.jwt-times tr:last-child td {
+  border-bottom: none;
+}
+
+.jwt-claim-name {
+  display: inline-block;
+  color: var(--tok-key);
+}
+
+.jwt-claim-label {
+  display: block;
+  font-size: 10px;
+}
+
+.jwt-overdue {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.jwt-section {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+
+.jwt-section-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 5px 3px 9px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.jwt-section-body {
+  max-height: 320px;
+  overflow: auto;
+}
+
+.jwt-signature {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 9px;
+}
+
+.jwt-signature-value {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  word-break: break-all;
+}

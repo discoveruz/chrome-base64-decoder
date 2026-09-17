@@ -1,0 +1,51 @@
+.hex-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.hex-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+
+.hex-note {
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+.hex-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.hex-row {
+  display: flex;
+  gap: 12px;
+  white-space: pre;
+}
+
+.hex-offset {
+  color: var(--text-faint);
+  flex: 0 0 auto;
+}
+
+.hex-bytes {
+  color: var(--text);
+  flex: 0 0 auto;
+}
+
+.hex-ascii {
+  color: var(--tok-string);
+  flex: 0 0 auto;
+}
