@@ -51,6 +51,8 @@ export default defineContentScript({
     });
 
     let current: { text: string; rect: DOMRect } | null = null;
+    /** Text the user explicitly closed, so we do not immediately re-offer it. */
+    let dismissed: string | null = null;
 
     function render() {
       if (!root) return;
@@ -61,10 +63,10 @@ export default defineContentScript({
             text={current.text}
             rect={current.rect}
             instant={settings.instantDecode}
-            onDismiss={hide}
+            onDismiss={dismiss}
             onOpenInTab={(input) => {
               void browser.runtime.sendMessage({ type: 'OPEN_IN_TAB', input } satisfies Message);
-              hide();
+              dismiss();
             }}
           />
         ) : null,
@@ -75,6 +77,24 @@ export default defineContentScript({
       if (current === null) return;
       current = null;
       render();
+    }
+
+    /**
+     * Closing is a decision about *this* selection, not just a repaint.
+     * Without remembering it, the selection is still on the page and the very
+     * next selectionchange/mouseup puts the card straight back up.
+     */
+    function dismiss() {
+      if (current) dismissed = current.text;
+      hide();
+    }
+
+    /** True for events raised inside our own shadow UI. */
+    function isFromOurUi(event: Event): boolean {
+      const host = ui.shadowHost;
+      if (!host) return false;
+      const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+      return path.includes(host) || event.target === host;
     }
 
     function readSelection(): { text: string; rect: DOMRect } | null {
@@ -93,9 +113,14 @@ export default defineContentScript({
       // Only offer the bubble when the selection actually looks decodable —
       // otherwise it pops up on ordinary prose and becomes noise.
       if (!selection || !looksDecodable(selection.text)) {
+        // Selection gone: clearing the memo lets the same text be offered again
+        // next time it is picked, rather than staying dead for the page's life.
+        if (!selection) dismissed = null;
         hide();
         return;
       }
+      if (selection.text === dismissed) return;
+      dismissed = null;
       current = selection;
       render();
     }
@@ -105,11 +130,15 @@ export default defineContentScript({
     let pointerDown = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
 
-    ctx.addEventListener(document, 'mousedown', () => {
+    // Clicks on our own card must not be mistaken for the user finishing a
+    // selection — that is what turned the close button into a reopen button.
+    ctx.addEventListener(document, 'mousedown', (event) => {
+      if (isFromOurUi(event)) return;
       pointerDown = true;
     });
 
-    ctx.addEventListener(document, 'mouseup', () => {
+    ctx.addEventListener(document, 'mouseup', (event) => {
+      if (isFromOurUi(event)) return;
       if (!pointerDown) return;
       pointerDown = false;
       if (settings.instantDecode) {

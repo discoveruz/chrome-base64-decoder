@@ -38,7 +38,12 @@ export function Bubble({ text, rect, instant, onDismiss, onOpenInTab }: Props) {
   useLayoutEffect(() => {
     if (!open) return;
     const onClickAway = (event: MouseEvent) => {
-      if (!cardRef.current?.contains(event.target as Node)) onDismiss();
+      // event.target retargets to the shadow HOST for anything inside the
+      // shadow root, so contains() would be false for our own card and every
+      // click inside it would close it. composedPath sees through the boundary.
+      const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+      if (cardRef.current && path.includes(cardRef.current)) return;
+      onDismiss();
     };
     // Defer so the click that opened the card does not immediately close it.
     const id = setTimeout(() => document.addEventListener('mousedown', onClickAway, true), 0);
