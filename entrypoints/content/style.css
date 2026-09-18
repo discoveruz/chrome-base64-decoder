@@ -1,72 +1,52 @@
-/* Styles for the in-page bubble.
-   These live inside a shadow root (cssInjectionMode: 'ui'), so they are fully
-   isolated from the host page — but that also means the shared tokens.css is
-   not available here, so the palette is redeclared locally. */
+/* Styles for the in-page bubble and result card.
+ *
+ * These live inside a shadow root (cssInjectionMode: 'ui'), isolated from the
+ * host page. The shared palette is imported here too, because a shadow root
+ * cannot see :root — that import is what lets the JSON tree render in the card
+ * with exactly the same colours it has in the popup.
+ */
+
+@import '../styles/palette.css';
 
 .b64-root {
-  --b64-bg: #ffffff;
-  --b64-bg-subtle: #f6f7f9;
-  --b64-border: #d8dde4;
-  --b64-text: #16191d;
-  --b64-muted: #5d6673;
-  --b64-accent: #3b5bdb;
-  --b64-ok: #1a7f4b;
-  --b64-ok-bg: #e3f5ea;
-  --b64-danger: #c0392b;
-  --b64-danger-bg: #fdeceb;
-  --b64-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --b64-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Card-local names, aliased to the shared tokens so the two cannot drift. */
+  --b64-bg: var(--bg-raised);
+  --b64-bg-subtle: var(--bg-subtle);
+  --b64-border: var(--border);
+  --b64-text: var(--text);
+  --b64-muted: var(--text-muted);
+  --b64-accent: var(--accent);
+  --b64-ok: var(--ok);
+  --b64-ok-bg: var(--ok-soft);
+  --b64-danger: var(--danger);
+  --b64-danger-bg: var(--danger-soft);
+  --b64-mono: var(--mono);
+  --b64-sans: var(--sans);
 
   all: initial;
   font-family: var(--b64-sans);
 }
 
-/* The container carries data-theme, mirroring the extension pages. Dark applies
-   from the OS only when no explicit theme is stamped. */
-@media (prefers-color-scheme: dark) {
-  .b64-root:not([data-theme]) {
-    --b64-bg: #1e232b;
-    --b64-bg-subtle: #171b21;
-    --b64-border: #39414d;
-    --b64-text: #e6e9ee;
-    --b64-muted: #9aa4b2;
-    --b64-accent: #7b9cff;
-    --b64-ok: #58d093;
-    --b64-ok-bg: #14301f;
-    --b64-danger: #ff8b7e;
-    --b64-danger-bg: #3a1d1a;
-  }
-}
-
-.b64-root[data-theme='dark'] {
-    --b64-bg: #1e232b;
-    --b64-bg-subtle: #171b21;
-    --b64-border: #39414d;
-    --b64-text: #e6e9ee;
-    --b64-muted: #9aa4b2;
-    --b64-accent: #7b9cff;
-    --b64-ok: #58d093;
-    --b64-ok-bg: #14301f;
-    --b64-danger: #ff8b7e;
-    --b64-danger-bg: #3a1d1a;
-}
-
+/* The card floats over an unknown page, so in black and white it needs a hard
+   edge rather than the palette's soft grey — otherwise it dissolves into a
+   white background. */
 .b64-root[data-theme='mono'] {
-  --b64-bg: #ffffff;
-  --b64-bg-subtle: #f2f2f2;
   --b64-border: #000000;
-  --b64-text: #000000;
-  --b64-muted: #464646;
-  --b64-accent: #000000;
-  --b64-ok: #000000;
-  --b64-ok-bg: #ffffff;
-  --b64-danger: #ffffff;
-  --b64-danger-bg: #000000;
 }
 
 /* Without hue, the expired badge earns its emphasis from inversion instead. */
 .b64-root[data-theme='mono'] .b64-badge {
   border: 1px solid #000;
+}
+
+.b64-root[data-theme='mono'] .b64-badge-danger {
+  background: #000;
+  color: #fff;
+}
+
+.b64-root[data-theme='mono'] .b64-badge-ok {
+  background: #fff;
+  color: #000;
 }
 
 .b64-root *,
@@ -211,4 +191,21 @@
 .b64-error strong {
   color: var(--b64-danger);
   font-size: 11.5px;
+}
+
+/* ---- the JSON tree, embedded in the card ---- */
+
+.b64-card-body .json-tree-wrap {
+  min-height: 0;
+}
+
+/* The card body already scrolls; letting the tree scroll too traps the wheel. */
+.b64-card-body .json-tree {
+  padding: 0;
+  overflow: visible;
+  font-size: 11.5px;
+}
+
+.b64-card-body .json-nested {
+  background: var(--bg-subtle);
 }

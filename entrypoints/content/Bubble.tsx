@@ -2,6 +2,8 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { decode, describeResult, type DecodeResult } from '@/lib/decode';
 import { addHistory } from '@/lib/storage';
 import { prettyJson, truncate, type Json } from '@/lib/json-utils';
+import { JsonTree } from '@/components/JsonTree';
+import { CopyButton } from '@/components/CopyButton';
 
 interface Props {
   text: string;
@@ -12,8 +14,8 @@ interface Props {
   onOpenInTab: (input: string) => void;
 }
 
-const CARD_WIDTH = 380;
-const CARD_MAX_HEIGHT = 320;
+const CARD_WIDTH = 440;
+const CARD_MAX_HEIGHT = 380;
 const GAP = 8;
 
 export function Bubble({ text, rect, instant, onDismiss, onOpenInTab }: Props) {
@@ -104,6 +106,9 @@ export function Bubble({ text, rect, instant, onDismiss, onOpenInTab }: Props) {
         <span className="b64-card-title">
           {busy ? 'Decoding…' : result ? describeResult(result) : ''}
         </span>
+        {result && result.kind !== 'error' ? (
+          <CopyButton value={() => copyableText(result)} className="b64-card-btn" title="Copy result" />
+        ) : null}
         <button
           type="button"
           className="b64-card-btn"
@@ -124,9 +129,27 @@ export function Bubble({ text, rect, instant, onDismiss, onOpenInTab }: Props) {
   );
 }
 
+/** What the header's copy button hands over for each result kind. */
+function copyableText(result: DecodeResult): string {
+  switch (result.kind) {
+    case 'json':
+      return prettyJson(result.value);
+    case 'jwt':
+      return prettyJson(result.payload as Json);
+    case 'text':
+      return result.text;
+    case 'binary':
+      return Array.from(result.bytes, (b) => b.toString(16).padStart(2, '0')).join(' ');
+    default:
+      return '';
+  }
+}
+
 /**
- * A read-only preview. The full interactive tree lives in the popup and the
- * viewer tab; cramming it into a page overlay is not worth the weight.
+ * The card renders the same collapsible, syntax-coloured tree as the popup —
+ * the shared palette is imported into the shadow root so the colours match.
+ * `compact` drops the tree's own toolbar, which will not fit at card width;
+ * the header's copy button and per-row actions cover it instead.
  */
 function Preview({ result }: { result: DecodeResult }) {
   if (result.kind === 'error') {
@@ -152,13 +175,13 @@ function Preview({ result }: { result: DecodeResult }) {
           <span className="b64-muted">{result.claims.validityDetail}</span>
         </div>
         <div className="b64-muted b64-note">Signature not verified.</div>
-        <pre className="b64-pre">{prettyJson(result.payload as Json)}</pre>
+        <JsonTree value={result.payload as Json} compact defaultDepth={3} />
       </>
     );
   }
 
   if (result.kind === 'json') {
-    return <pre className="b64-pre">{truncate(prettyJson(result.value), 6000)}</pre>;
+    return <JsonTree value={result.value} rawText={result.text} compact defaultDepth={3} />;
   }
 
   if (result.kind === 'text') {

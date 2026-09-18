@@ -189,29 +189,31 @@
 .tok-array { color: var(--tok-punct); }
 
 /* Black and white: hue no longer separates the value types, so lean on weight
-   and style instead. Without this the tree reads as undifferentiated grey. */
-:root[data-theme='mono'] .tok-key {
+   and style instead. Without this the tree reads as undifferentiated grey.
+   Selector is deliberately bare rather than :root-scoped — :root matches
+   nothing inside the content script's shadow root. */
+[data-theme='mono'] .tok-key {
   font-weight: 700;
 }
 
-:root[data-theme='mono'] .tok-string {
+[data-theme='mono'] .tok-string {
   font-weight: 400;
 }
 
-:root[data-theme='mono'] .tok-number,
-:root[data-theme='mono'] .tok-boolean {
+[data-theme='mono'] .tok-number,
+[data-theme='mono'] .tok-boolean {
   font-weight: 600;
 }
 
-:root[data-theme='mono'] .tok-boolean {
+[data-theme='mono'] .tok-boolean {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-:root[data-theme='mono'] .tok-null {
+[data-theme='mono'] .tok-null {
   font-style: italic;
 }
 
-:root[data-theme='mono'] .json-nested {
+[data-theme='mono'] .json-nested {
   border-left-color: #000;
 }
