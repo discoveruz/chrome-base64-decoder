@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { Bubble } from './Bubble';
 import { DEFAULT_SETTINGS, getSettings, settingsItem, type Settings } from '@/lib/storage';
 import { applyTheme } from '@/lib/theme';
-import { looksDecodable } from '@/lib/json-utils';
+import { containsDecodable } from '@/lib/json-utils';
 import type { Message } from '@/lib/messages';
 import './style.css';
 
@@ -112,7 +112,7 @@ export default defineContentScript({
       const selection = readSelection();
       // Only offer the bubble when the selection actually looks decodable —
       // otherwise it pops up on ordinary prose and becomes noise.
-      if (!selection || !looksDecodable(selection.text)) {
+      if (!selection || !containsDecodable(selection.text)) {
         // Selection gone: clearing the memo lets the same text be offered again
         // next time it is picked, rather than staying dead for the page's life.
         if (!selection) dismissed = null;

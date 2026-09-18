@@ -113,10 +113,54 @@ function fromText(text: string, meta: DecodeMeta): DecodeResult {
 }
 
 /**
- * Decode `input` as far as it will go.
- * Always resolves — failures come back as `kind: 'error'` with a specific hint.
+ * Runs of base64-ish characters long enough to be a real payload. The dot is
+ * included so a JWT survives as one run rather than three.
  */
-export async function decode(input: string): Promise<DecodeResult> {
+const BASE64_RUN = /[A-Za-z0-9+/_-][A-Za-z0-9+/_.-]{14,}={0,2}/g;
+
+/**
+ * Plausible payloads hiding inside surrounding text, longest first — a label is
+ * essentially always shorter than the value it labels.
+ */
+function candidateRuns(input: string): string[] {
+  const found = input.match(BASE64_RUN) ?? [];
+  const cleaned = found
+    .map((run) => run.replace(/^\.+|\.+$/g, ''))
+    .filter((run) => run.length >= 16);
+  return [...new Set(cleaned)].sort((a, b) => b.length - a.length).slice(0, 4);
+}
+
+/** Name the label we dropped, so the step chip explains itself. */
+function describeExtraction(input: string, candidate: string): string {
+  const before = input.slice(0, input.indexOf(candidate));
+  const label = /([A-Za-z][A-Za-z0-9_.\-]{0,40})\s*[=:]\s*$/.exec(before);
+  return label ? `dropped “${label[1]}=”` : 'extracted from text';
+}
+
+/**
+ * Decode `input` as far as it will go.
+ *
+ * Real-world base64 rarely arrives bare: it comes as `payload_b64=…`, `v1:…`,
+ * a log line, or a JSON field. So if a straight decode fails, fall back to
+ * pulling the most plausible base64 run out of whatever surrounds it. This runs
+ * only after failure, so it can never change the result of input that already
+ * decoded cleanly.
+ */
+export async function decode(input: string, depth = 0): Promise<DecodeResult> {
+  const direct = await decodeDirect(input);
+  if (direct.kind !== 'error' || depth > 2) return direct;
+
+  for (const candidate of candidateRuns(input)) {
+    if (candidate === input.trim()) continue;
+    const result = await decode(candidate, depth + 1);
+    if (result.kind !== 'error') {
+      return { ...result, steps: [describeExtraction(input, candidate), ...result.steps] };
+    }
+  }
+  return direct;
+}
+
+async function decodeDirect(input: string): Promise<DecodeResult> {
   if (input.length > MAX_INPUT_LENGTH) {
     return {
       kind: 'error',

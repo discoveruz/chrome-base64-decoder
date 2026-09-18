@@ -75,6 +75,24 @@ export function looksDecodable(value: string): boolean {
   return /[A-Z]/.test(s) && /[a-z0-9]/.test(s);
 }
 
+/**
+ * Does this selection contain something worth offering to decode?
+ *
+ * Looser than looksDecodable, because a selection is usually grabbed off a log
+ * line or a query string and drags its label along: `payload_b64=…`, `v1:…`.
+ * Each embedded run still has to pass the strict test, whose mixed-case
+ * requirement is what keeps ordinary prose, URLs and domain names out.
+ *
+ * Kept separate from looksDecodable so the JSON tree's nested-decode button
+ * stays conservative — there, a false positive puts a useless button on every
+ * long string in the payload.
+ */
+export function containsDecodable(value: string): boolean {
+  if (looksDecodable(value)) return true;
+  const runs = value.match(/[A-Za-z0-9+/_-][A-Za-z0-9+/_.-]{18,}={0,2}/g) ?? [];
+  return runs.some((run) => looksDecodable(run.replace(/^\.+|\.+$/g, '')));
+}
+
 /** Truncate for previews without splitting a surrogate pair. */
 export function truncate(text: string, max: number): string {
   if (text.length <= max) return text;

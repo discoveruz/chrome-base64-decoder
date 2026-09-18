@@ -225,3 +225,58 @@ describe('helpers', () => {
     expect(relativeTime(now - 60_000, now)).toBe('1 minute ago');
   });
 });
+
+describe('base64 wrapped in surrounding text', () => {
+  const inner = b64('{"ticket":"FRMT7HDJ","http_status":201,"ok":false}');
+
+  it('handles a key=value label, the shape logs and query strings use', async () => {
+    const result = await decode(`payload_b64=${inner}`);
+    expect(result.kind).toBe('json');
+    if (result.kind !== 'json') throw new Error('expected json');
+    expect((result.value as Record<string, unknown>).ticket).toBe('FRMT7HDJ');
+    expect(result.steps[0]).toContain('payload_b64');
+  });
+
+  it('handles a colon-separated version prefix', async () => {
+    const result = await decode(`v1:${inner}`);
+    expect(result.kind).toBe('json');
+    if (result.kind !== 'json') throw new Error('expected json');
+    expect(result.steps[0]).toContain('v1');
+  });
+
+  it('handles a yaml/header style label', async () => {
+    const result = await decode(`  payload: ${inner}`);
+    expect(result.kind).toBe('json');
+  });
+
+  it('pulls the payload out of a whole log line', async () => {
+    const result = await decode(`[INFO] 2026-09-18 request body_b64=${inner} status=201 done`);
+    expect(result.kind).toBe('json');
+    if (result.kind !== 'json') throw new Error('expected json');
+    expect((result.value as Record<string, unknown>).ticket).toBe('FRMT7HDJ');
+  });
+
+  it('extracts a JWT from a labelled line without splitting it at the dots', async () => {
+    const now = Math.floor(Date.now() / 1000);
+    const token = makeJwt({ sub: 'abc', exp: now + 3600 });
+    const result = await decode(`Authorization=${token}`);
+    expect(result.kind).toBe('jwt');
+  });
+
+  it('prefers the payload over a long label', async () => {
+    const result = await decode(`an_extremely_long_field_name_here=${inner}`);
+    expect(result.kind).toBe('json');
+  });
+
+  it('leaves bare base64 completely untouched', async () => {
+    const result = await decode(inner);
+    expect(result.kind).toBe('json');
+    // No extraction step is prepended when the direct decode already worked.
+    expect(result.steps.some((s) => s.includes('dropped') || s.includes('extracted'))).toBe(false);
+  });
+
+  it('still reports a specific error when there is no payload at all', async () => {
+    const result = await decode('label=not really base64 !!!');
+    expect(result.kind).toBe('error');
+  });
+});
