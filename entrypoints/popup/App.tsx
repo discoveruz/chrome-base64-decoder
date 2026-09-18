@@ -44,13 +44,13 @@ export default function App() {
         setInput(staged);
         return;
       }
-      if (settings.autoReadSelection) void readSelection(true);
+      if (settings.enabled && settings.autoReadSelection) void readSelection(true);
     })();
     return () => {
       cancelled = true;
     };
-    // settings.autoReadSelection is read once, after settings load.
-  }, [settings.autoReadSelection, readSelection, setInput]);
+    // Read once, after settings load.
+  }, [settings.enabled, settings.autoReadSelection, readSelection, setInput]);
 
   const openInTab = useCallback(async () => {
     const url = await stageHandoff(input);
@@ -64,6 +64,21 @@ export default function App() {
         <span className="popup-title">
           <span aria-hidden="true">🔓</span> Base64 / JWT
         </span>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={settings.enabled}
+          className={`popup-power ${settings.enabled ? 'is-on' : 'is-off'}`}
+          onClick={() => void patchSettings({ enabled: !settings.enabled })}
+          title={
+            settings.enabled
+              ? 'Active on pages — click to turn off'
+              : 'Off — click to turn back on'
+          }
+        >
+          <span className="popup-power-track"><span className="popup-power-knob" /></span>
+          {settings.enabled ? 'On' : 'Off'}
+        </button>
         <nav className="popup-tabs">
           {(['decode', 'history', 'settings'] as Tab[]).map((name) => (
             <button
@@ -77,6 +92,13 @@ export default function App() {
           ))}
         </nav>
       </header>
+
+      {!settings.enabled && (
+        <div className="popup-off-banner">
+          Page features are off — no bubble, instant decode or right-click menu. You can still
+          paste here.
+        </div>
+      )}
 
       {tab === 'decode' && (
         <>
@@ -128,14 +150,16 @@ export default function App() {
             label="Floating bubble on selections"
             hint="Shows a 🔓 button when you select base64-looking text on a page."
             checked={settings.bubbleEnabled}
+            disabled={!settings.enabled}
+            disabledHint="The extension is switched off."
             onChange={(next) => void patchSettings({ bubbleEnabled: next })}
           />
           <Toggle
             label="Instant decode"
             hint="Skip the 🔓 button — decode and open the result the moment you select something that looks like base64."
             checked={settings.instantDecode}
-            disabled={!settings.bubbleEnabled}
-            disabledHint="Requires the floating bubble."
+            disabled={!settings.enabled || !settings.bubbleEnabled}
+            disabledHint={settings.enabled ? 'Requires the floating bubble.' : 'The extension is switched off.'}
             indent
             onChange={(next) => void patchSettings({ instantDecode: next })}
           />
@@ -143,6 +167,8 @@ export default function App() {
             label="Read page selection on open"
             hint="Auto-fills this popup with whatever is selected on the page."
             checked={settings.autoReadSelection}
+            disabled={!settings.enabled}
+            disabledHint="The extension is switched off."
             onChange={(next) => void patchSettings({ autoReadSelection: next })}
           />
           <Toggle

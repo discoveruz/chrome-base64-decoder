@@ -16,6 +16,12 @@ import type { DecodeResult } from './decode';
 export type Theme = 'system' | 'light' | 'dark' | 'mono';
 
 export interface Settings {
+  /**
+   * Master switch. When off the extension does nothing to pages at all — no
+   * bubble, no instant decode, no context menu. The popup still decodes what
+   * you paste into it, because opening it is an explicit request.
+   */
+  enabled: boolean;
   /** Show the floating bubble on base64-looking selections. */
   bubbleEnabled: boolean;
   /** Skip the bubble button and open the decoded card straight away. */
@@ -38,6 +44,7 @@ export interface HistoryEntry {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
+  enabled: true,
   bubbleEnabled: true,
   // Off by default: popping a dialog open on every selection is a big
   // behavioural change to someone else's page, so it should be chosen.

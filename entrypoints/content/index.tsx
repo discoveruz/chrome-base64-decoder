@@ -46,7 +46,7 @@ export default defineContentScript({
       // The stored object may predate a new key, so merge over the defaults.
       settings = { ...DEFAULT_SETTINGS, ...next };
       if (container) applyTheme(settings.theme, container);
-      if (!settings.bubbleEnabled) hide();
+      if (!settings.enabled || !settings.bubbleEnabled) hide();
       else render();
     });
 
@@ -108,7 +108,7 @@ export default defineContentScript({
     }
 
     function offer() {
-      if (!settings.bubbleEnabled) return;
+      if (!settings.enabled || !settings.bubbleEnabled) return;
       const selection = readSelection();
       // Only offer the bubble when the selection actually looks decodable —
       // otherwise it pops up on ordinary prose and becomes noise.

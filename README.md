@@ -52,6 +52,12 @@ Rebind the shortcut at `chrome://extensions/shortcuts`.
 
 ## Settings and privacy
 
+A master **On/Off switch** sits in the popup header. Switched off, the extension does nothing
+to any page — no bubble, no instant decode, no right-click entry, no reading your selection —
+and the toolbar icon carries an `OFF` badge so the state is visible without opening anything.
+The popup still decodes whatever you paste into it, since opening it is an explicit request.
+The switch takes effect immediately in tabs that are already open.
+
 In the popup's ⚙ tab:
 
 - **Theme** — System, Light, Dark, or **B&W**. System follows the OS; the other three override
