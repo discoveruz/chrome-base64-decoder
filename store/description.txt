@@ -1,0 +1,33 @@
+Base64 / JWT Decoder turns encoded strings into readable, colour-coded JSON, right where you find them.
+
+Select base64 on any page and a small 🔓 button appears next to it. Click it and the decoded result opens in place as a collapsible JSON tree. You can also right-click a selection, press a keyboard shortcut (Alt+Shift+D by default), or paste straight into the popup.
+
+BUILT FOR REAL-WORLD INPUT
+The strings you meet in logs, dashboards and API responses are rarely clean. This extension handles:
+• Standard base64 and base64url, with or without padding
+• Labels and prefixes such as payload_b64=, v1: or Bearer, which are removed automatically
+• Quotes, line breaks and data: URI prefixes, which are stripped
+• gzip and zlib payloads, which are decompressed transparently
+• Percent-encoded values, which are unwrapped
+• Base64 nested inside JSON, which decodes in place with one click
+• Binary data, shown as a hex dump, with common file types recognised
+
+A PROPER JSON VIEWER
+• Collapsible, syntax-coloured tree
+• Filter keys and values as you type
+• Copy pretty or minified JSON, any single value, or its JSON path
+• Open large payloads in a full browser tab
+
+JWT DECODING
+Tokens are split into header, payload and signature. Expiry, issue and not-before times are shown as real dates and in plain language ("expired 2 hours ago"), with a clear status badge.
+Note: signatures are not verified, because that requires the issuer's key. The extension says so on every token.
+
+MAKE IT YOURS
+• Instant decode: skip the button and see the result the moment you select
+• Light, dark and black & white themes
+• One switch in the popup turns all page features off without uninstalling
+• A local history of recent decodes, which you can turn off or clear in one click
+
+PRIVATE BY DESIGN
+Everything is decoded locally in your browser. Nothing you select, paste or decode is ever sent anywhere.
+The extension asks for access to all sites only so it can offer the decode button next to text you select. You can switch that off at any time.
