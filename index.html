@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Base64 / JWT Decoder</title>
+<meta name="description" content="Privacy policy for the Base64 / JWT Decoder Chrome extension. All decoding happens locally; no data leaves your browser.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --bg-subtle: #f5f7fa;
+    --text: #1d2330;
+    --text-muted: #5b6475;
+    --border: #e1e5ec;
+    --accent: #3b5bdb;
+    --accent-soft: #e8edfb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151c;
+      --bg-subtle: #1a1f29;
+      --text: #e6e9ef;
+      --text-muted: #9aa3b2;
+      --border: #2a313d;
+      --accent: #7b9cff;
+      --accent-soft: #1e2740;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 48px 20px 64px;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  main { max-width: 720px; margin: 0 auto; }
+  header { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+  .mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; margin-bottom: 16px;
+    border-radius: 10px; background: var(--accent); color: #fff;
+    font-weight: 700; font-size: 15px; letter-spacing: -0.02em;
+  }
+  h1 { margin: 0 0 6px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+  .meta { margin: 0; color: var(--text-muted); font-size: 14px; }
+  .summary {
+    margin: 0 0 32px; padding: 14px 18px;
+    border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+    background: var(--accent-soft);
+  }
+  h2 { margin: 36px 0 10px; font-size: 20px; line-height: 1.3; }
+  p, ul { margin: 0 0 14px; }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  code {
+    padding: 1px 5px; border-radius: 4px; background: var(--bg-subtle);
+    font: 0.9em ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  .table-wrap { overflow-x: auto; margin: 0 0 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { background: var(--bg-subtle); font-weight: 600; }
+  td:first-child { white-space: nowrap; font-weight: 500; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="mark" aria-hidden="true">64</div>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Base64 / JWT Decoder · Effective 22 September 2026</p>
+  </header>
+
+  <p>Base64 / JWT Decoder ("the extension") is a Chrome extension that decodes base64, base64url and JWT strings. This policy explains what the extension does with your data.</p>
+
+  <p class="summary"><strong>In short:</strong> everything stays on your computer. The extension makes no network requests and sends nothing to anyone.</p>
+
+  <h2>What the extension handles</h2>
+  <ul>
+    <li><strong>Text you select on a web page or paste into the popup.</strong> The extension reads this text only to decode it and show you the result. It checks your selections to decide whether to show the decode button, and does nothing else with page content.</li>
+    <li><strong>Your settings</strong>, such as theme, on/off switch, instant decode and history on/off.</li>
+    <li><strong>Decode history</strong>, if you leave it switched on. This is a list of your 50 most recent decodes. Each entry holds the input text (up to 20,000 characters), a short preview of the result, its type (for example JSON or JWT) and the time. It does <strong>not</strong> record the website, page address or page title.</li>
+  </ul>
+
+  <h2>Where it is stored</h2>
+  <p>Everything is processed locally, inside your browser.</p>
+  <ul>
+    <li>Settings and history are saved in Chrome's local extension storage, on your device only.</li>
+    <li>When you use "Open in tab", the value is passed to the new tab through Chrome's session storage. It is deleted as soon as the tab reads it, and in any case when you close the browser.</li>
+  </ul>
+
+  <h2>What the extension does not do</h2>
+  <ul>
+    <li>It does not send any data to the developer or to anyone else. It makes no network requests.</li>
+    <li>It has no analytics, tracking, advertising or remote code.</li>
+    <li>It does not sell, share or transfer your data to third parties.</li>
+    <li>It does not read your clipboard. It only writes to it when you click a Copy button.</li>
+    <li>It does not collect names, email addresses, passwords, payment details, location or browsing history.</li>
+  </ul>
+
+  <h2>Permissions and why they are needed</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Permission</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Access to all websites</td><td>Shows the decode button next to base64 text you select on any page.</td></tr>
+        <tr><td><code>activeTab</code>, <code>scripting</code></td><td>Reads your current selection when you open the popup or use the right-click menu.</td></tr>
+        <tr><td><code>contextMenus</code></td><td>Adds "Decode Base64 / JWT" to the right-click menu.</td></tr>
+        <tr><td><code>storage</code></td><td>Saves your settings and local history.</td></tr>
+        <tr><td><code>clipboardWrite</code></td><td>Copies decoded results when you click Copy.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Your control</h2>
+  <ul>
+    <li>Turn off <strong>Save decode history</strong> in the popup's settings, or click <strong>Clear</strong> to delete it at once.</li>
+    <li>Use the <strong>On/Off switch</strong> in the popup to stop the extension from interacting with web pages.</li>
+    <li>Uninstalling the extension removes all of its stored data from your browser.</li>
+  </ul>
+
+  <h2>Children</h2>
+  <p>The extension is a developer tool. It is not directed at children and collects no personal information from anyone.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the updated version will be published at this address with a new effective date.</p>
+
+  <h2>Contact</h2>
+  <p>For questions about this policy, use the contact details on the extension's Chrome Web Store listing.</p>
+
+  <footer>Base64 / JWT Decoder · Privacy Policy</footer>
+</main>
+</body>
+</html>
