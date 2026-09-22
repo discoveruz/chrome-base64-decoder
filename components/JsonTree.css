@@ -70,7 +70,11 @@
   flex: 0 0 auto;
 }
 
-.json-row-copy {
+/* Scoped under .json-row-actions on purpose. These buttons also carry the shared
+   .btn/.btn-icon classes, and tokens.css loads after this file, so a bare
+   .json-row-copy lost the cascade: the invisible buttons kept .btn-icon's
+   padding and border and stretched every row to ~25px instead of ~18px. */
+.json-row-actions .json-row-copy {
   opacity: 0;
   padding: 0 4px;
   border: none;
@@ -124,7 +128,7 @@
   font-size: 11px;
 }
 
-.json-nested-btn {
+.json-row-actions .json-nested-btn {
   opacity: 0.85;
   padding: 0 4px;
   border: 1px solid var(--border);
